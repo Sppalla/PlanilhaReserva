@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Pedidos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="header-container">
+    <div class="header-content">
+      <img src="imagem/logo.jpg" alt="Logo Casa das Cordas RS" class="header-logo">
+      <div class="header-text">
+        <h1 class="header-title">Casa das Cordas RS</h1>
+        <p class="welcome-message">Seja bem-vindo a sua planilha Cordanauta</p>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="tab-container">
+      <button class="tab-button active" onclick="openTab('tab-clientes')">Pedidos de Clientes</button>
+      <button class="tab-button" onclick="openTab('tab-producao')">Pedidos Para a Produção da Loja</button>
+    </div>
+    
+    <div id="tab-clientes" class="tab-content active">
+      <h2 class="section-title">Pedidos de Clientes</h2>
+      
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>PEDIDO #</th>
+              <th>DATA</th>
+              <th>NOME DO CLIENTE</th>
+              <th>MATERIAL</th>
+              <th>ESPESSURA</th>
+              <th>MODELO DA CORDA</th>
+              <th>COR</th>
+              <th>QUANTIDADE</th>
+              <th>TAMANHO DO ROLO</th>
+              <th>NOME DO VENDEDOR</th>
+              <th>STATUS</th>
+              <th>PRAZO MÁXIMO</th>
+              <th>AÇÕES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Os pedidos serão adicionados dinamicamente -->
+          </tbody>
+        </table>
+      </div>
+      
+      <h3 style="margin: 30px 0 20px 0; font-weight: 600;">Adicionar Novo Pedido</h3>
+      
+      <form id="form-cliente">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="pedido-num">Pedido #</label>
+            <input type="text" id="pedido-num" class="form-control" placeholder="Número do pedido">
+          </div>
+          <div class="form-group">
+            <label for="data">Data</label>
+            <input type="date" id="data" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="cliente">Nome do Cliente</label>
+            <input type="text" id="cliente" class="form-control" placeholder="Nome do cliente">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="material">Material</label>
+            <select id="material" class="form-control">
+              <option value="">Selecione o material</option>
+              <option value="Polipropileno">Polipropileno</option>
+              <option value="Algodão">Algodão</option>
+              <option value="Fio Náutico">Fio Náutico</option>
+              <option value="Rami">Rami</option>
+              <option value="Juta">Juta</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="espessura">Espessura</label>
+            <select id="espessura" class="form-control">
+              <option value="">Selecione a espessura</option>
+              <option value="2mm">2mm</option>
+              <option value="3mm">3mm</option>
+              <option value="4mm">4mm</option>
+              <option value="5mm">5mm</option>
+              <option value="6mm">6mm</option>
+              <option value="7mm">7mm</option>
+              <option value="8mm">8mm</option>
+              <option value="9mm">9mm</option>
+              <option value="10mm">10mm</option>
+              <option value="11mm">11mm</option>
+              <option value="12mm">12mm</option>
+              <option value="13mm">13mm</option>
+              <option value="14mm">14mm</option>
+              <option value="15mm">15mm</option>
+              <option value="16mm">16mm</option>
+              <option value="17mm">17mm</option>
+              <option value="18mm">18mm</option>
+              <option value="19mm">19mm</option>
+              <option value="20mm">20mm</option>
+              <option value="21mm">21mm</option>
+              <option value="22mm">22mm</option>
+              <option value="23mm">23mm</option>
+              <option value="24mm">24mm</option>
+              <option value="25mm">25mm</option>
+              <option value="10/1">10/1</option>
+              <option value="10/2">10/2</option>
+              <option value="10/3">10/3</option>
+              <option value="10/4">10/4</option>
+              <option value="3/1">3/1</option>
+              <option value="4/1">4/1</option>
+              <option value="4/2">4/2</option>
+              <option value="5/2">5/2</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="modelo">Modelo da Corda</label>
+            <select id="modelo" class="form-control">
+              <option value="">Selecione o modelo</option>
+              <option value="Lisa">Lisa</option>
+              <option value="Zig-Zag">Zig-Zag</option>
+              <option value="Zig-Zag">Poa</option>
+              <option value="Espiral">Espiral</option>
+              <option value="Colors">Colors</option>
+              <option value="Glamour">Glamour</option>
+              <option value="Mesclada">Mesclada</option>
+              <option value="Plana">Plana</option>
+              <option value="Plana">Fio</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group dropdown">
+            <label for="cor">Cor</label>
+            <input type="text" id="cor" class="form-control" placeholder="Digite para buscar" onclick="toggleDropdown('corDropdown')" oninput="filterCores(this.value)">
+            <div id="corDropdown" class="dropdown-content">
+              <div class="color-list-item" onclick="selectCor('AZUL BEBÊ', '#89CFF0')">
+                <span class="color-sample" style="background-color: #89CFF0;"></span>
+                AZUL BEBÊ
+              </div>
+              <div class="color-list-item" onclick="selectCor('AZUL TURQUESA', '#40E0D0')">
+                <span class="color-sample" style="background-color: #40E0D0;"></span>
+                AZUL TURQUESA
+              </div>
+              <div class="color-list-item" onclick="selectCor('AZUL ROYAL', '#4169E1')">
+                <span class="color-sample" style="background-color: #4169E1;"></span>
+                AZUL ROYAL
+              </div>
+              <div class="color-list-item" onclick="selectCor('AZUL ANIL', '#4B0082')">
+                <span class="color-sample" style="background-color: #4B0082;"></span>
+                AZUL ANIL
+              </div>
+              <div class="color-list-item" onclick="selectCor('AZUL MARINHO', '#000080')">
+                <span class="color-sample" style="background-color: #000080;"></span>
+                AZUL MARINHO
+              </div>
+              
+              <!-- Tons de verde -->
+              <div class="color-list-item" onclick="selectCor('VERDE BEBÊ', '#CCFFCC')">
+                <span class="color-sample" style="background-color: #CCFFCC;"></span>
+                VERDE BEBÊ
+              </div>
+              <div class="color-list-item" onclick="selectCor('VERDE LIMÃO', '#32CD32')">
+                <span class="color-sample" style="background-color: #32CD32;"></span>
+                VERDE LIMÃO
+              </div>
+              <div class="color-list-item" onclick="selectCor('VERDE NEON', '#39FF14')">
+                <span class="color-sample" style="background-color: #39FF14;"></span>
+                VERDE NEON
+              </div>
+              <div class="color-list-item" onclick="selectCor('VERDE ÁGUA', '#7FFFD4')">
+                <span class="color-sample" style="background-color: #7FFFD4;"></span>
+                VERDE ÁGUA
+              </div>
+              <div class="color-list-item" onclick="selectCor('VERDE CABARET', '#00FF7F')">
+                <span class="color-sample" style="background-color: #00FF7F;"></span>
+                VERDE CABARET
+              </div>
+              <div class="color-list-item" onclick="selectCor('VERDE BANDEIRA', '#008000')">
+                <span class="color-sample" style="background-color: #008000;"></span>
+                VERDE BANDEIRA
+              </div>
+              <div class="color-list-item" onclick="selectCor('VERDE MILITAR', '#4B5320')">
+                <span class="color-sample" style="background-color: #4B5320;"></span>
+                VERDE MILITAR
+              </div>
+              <div class="color-list-item" onclick="selectCor('VERDE JADE', '#00A86B')">
+                <span class="color-sample" style="background-color: #00A86B;"></span>
+                VERDE JADE
+              </div>
+              
+              <!-- Tons de amarelo -->
+              <div class="color-list-item" onclick="selectCor('AMARELO', '#efd109')">
+                <span class="color-sample" style="background-color: #efd109;"></span>
+                AMARELO
+              </div>
+              <div class="color-list-item" onclick="selectCor('AMARELO MANTEIGA', '#F3E5AB')">
+                <span class="color-sample" style="background-color: #F3E5AB;"></span>
+                AMARELO MANTEIGA
+              </div>
+              <div class="color-list-item" onclick="selectCor('MOSTARDA', '#FFDB58')">
+                <span class="color-sample" style="background-color: #FFDB58;"></span>
+                MOSTARDA
+              </div>
+              
+              <!-- Tons de champagne -->
+              <div class="color-list-item" onclick="selectCor('CHAMPAGNE', '#F7E7CE')">
+                <span class="color-sample" style="background-color: #F7E7CE;"></span>
+                CHAMPAGNE
+              </div>
+              <div class="color-list-item" onclick="selectCor('CHAMPAGNE ESCURO', '#E8C39E')">
+                <span class="color-sample" style="background-color: #E8C39E;"></span>
+                CHAMPAGNE ESCURO
+              </div>
+              
+              <!-- Laranja e tons de vermelho -->
+              <div class="color-list-item" onclick="selectCor('LARANJA', '#FFA500')">
+                <span class="color-sample" style="background-color: #FFA500;"></span>
+                LARANJA
+              </div>
+              <div class="color-list-item" onclick="selectCor('VERMELHO', '#db0e0e')">
+                <span class="color-sample" style="background-color: #db0e0e;"></span>
+                VERMELHO
+              </div>
+              <div class="color-list-item" onclick="selectCor('VERMELHO FIGO', '#932a2a')">
+                <span class="color-sample" style="background-color: #932a2a;"></span>
+                VERMELHO FIGO
+              </div>
+              
+              <!-- Tons de rosa -->
+              <div class="color-list-item" onclick="selectCor('ROSA BEBÊ', '#FFC0CB')">
+                <span class="color-sample" style="background-color: #FFC0CB;"></span>
+                ROSA BEBÊ
+              </div>
+              <div class="color-list-item" onclick="selectCor('ROSA NEON', '#FF69B4')">
+                <span class="color-sample" style="background-color: #FF69B4;"></span>
+                ROSA NEON
+              </div>
+              <div class="color-list-item" onclick="selectCor('ROSA PINK', '#FF1493')">
+                <span class="color-sample" style="background-color: #FF1493;"></span>
+                ROSA PINK
+              </div>
+              
+              <!-- Tons de roxo -->
+              <div class="color-list-item" onclick="selectCor('LILÁS', '#C8A2C8')">
+                <span class="color-sample" style="background-color: #C8A2C8;"></span>
+                LILÁS
+              </div>
+              <div class="color-list-item" onclick="selectCor('ROXO', '#800080')">
+                <span class="color-sample" style="background-color: #800080;"></span>
+                ROXO
+              </div>
+              <div class="color-list-item" onclick="selectCor('BORDÔ', '#800020')">
+                <span class="color-sample" style="background-color: #800020;"></span>
+                BORDÔ
+              </div>
+              <div class="color-list-item" onclick="selectCor('VINHO', '#722F37')">
+                <span class="color-sample" style="background-color: #722F37;"></span>
+                VINHO
+              </div>
+              
+              <!-- Tons de bege e marrom -->
+              <div class="color-list-item" onclick="selectCor('AREIA', '#F5DEB3')">
+                <span class="color-sample" style="background-color: #F5DEB3;"></span>
+                AREIA
+              </div>
+              <div class="color-list-item" onclick="selectCor('RAMI', '#D3CBBA')">
+                <span class="color-sample" style="background-color: #D3CBBA;"></span>
+                RAMI
+              </div>
+              <div class="color-list-item" onclick="selectCor('BEGE', '#F5F5DC')">
+                <span class="color-sample" style="background-color: #F5F5DC;"></span>
+                BEGE
+              </div>
+              <div class="color-list-item" onclick="selectCor('BRONZE', '#CD7F32')">
+                <span class="color-sample" style="background-color: #CD7F32;"></span>
+                BRONZE
+              </div>
+              <div class="color-list-item" onclick="selectCor('TERRACOTA', '#E2725B')">
+                <span class="color-sample" style="background-color: #E2725B;"></span>
+                TERRACOTA
+              </div>
+              <div class="color-list-item" onclick="selectCor('CARAMELO', '#C67C48')">
+                <span class="color-sample" style="background-color: #C67C48;"></span>
+                CARAMELO
+              </div>
+              <div class="color-list-item" onclick="selectCor('MARROM CAFÉ', '#6F4E37')">
+                <span class="color-sample" style="background-color: #6F4E37;"></span>
+                MARROM CAFÉ
+              </div>
+              <div class="color-list-item" onclick="selectCor('MARROM ESCURO', '#3C1414')">
+                <span class="color-sample" style="background-color: #3C1414;"></span>
+                MARROM ESCURO
+              </div>
+              
+              <!-- Tons neutros -->
+              <div class="color-list-item" onclick="selectCor('BRANCO', '#ffffff')">
+                <span class="color-sample" style="background-color: #ffffff;"></span>
+                BRANCA
+              </div>
+              <div class="color-list-item" onclick="selectCor('PRATA', '#C0C0C0')">
+                <span class="color-sample" style="background-color: #C0C0C0;"></span>
+                PRATA
+              </div>
+              <div class="color-list-item" onclick="selectCor('PRATA GRAY', '#BBBBBB')">
+                <span class="color-sample" style="background-color: #BBBBBB;"></span>
+                PRATA GRAY
+              </div>
+              <div class="color-list-item" onclick="selectCor('CINZA', '#808080')">
+                <span class="color-sample" style="background-color: #808080;"></span>
+                CINZA
+              </div>
+              <div class="color-list-item" onclick="selectCor('CHUMBO', '#2F4F4F')">
+                <span class="color-sample" style="background-color: #2F4F4F;"></span>
+                CHUMBO
+              </div>
+              <div class="color-list-item" onclick="selectCor('Preta', 'black')">
+                <span class="color-sample" style="background-color: black;"></span>
+                PRETA
+              </div>
+              <div class="color-list-item" onclick="selectCor('Cru','#F5DEB3')">
+                <span class="color-sample" style="background-color: #F5DEB3;"></span>
+                CRU
+              </div>
+              <div class="color-list-item" onclick="selectCor('Rami','#F5F5DC')">
+                <span class="color-sample" style="background-color: #F5F5DC;"></span>
+                RAMI
+              </div>
+              <div class="color-list-item" onclick="selectCor('Juta','#C67C48')">
+                <span class="color-sample" style="background-color: #C67C48;"></span>
+                JUTA
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="quantidade">Quantidade</label>
+            <input type="number" id="quantidade" class="form-control" placeholder="Quantidade">
+          </div>
+          <div class="form-group">
+            <label for="tamanho">Tamanho do Rolo</label>
+            <input type="number" id="tamanho" class="form-control" placeholder="Tamanho em metros">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="vendedor">Nome do Vendedor</label>
+            <input type="text" id="vendedor" class="form-control" placeholder="Nome do vendedor">
+          </div>
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" class="form-control">
+              <option value="aguardando">Aguardando</option>
+              <option value="producao">Em Produção</option>
+              <option value="concluido">Concluído</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="prazo">Prazo Máximo</label>
+            <input type="date" id="prazo" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="btnSalvarCliente">Adicionar Pedido</button>
+          <button type="button" class="btn btn-secondary" id="btnCancelarEdicaoCliente" style="display: none;">Cancelar Edição</button>
+          <input type="hidden" id="editandoIndexCliente" value="">
+        </div>
+      </form>
+    </div>
+    
+    <div id="tab-producao" class="tab-content">
+      <h2 class="section-title">Pedidos Para a Produção da Loja</h2>
+      
+      <div class="table-responsive">
+        <table id="tabela-producao" class="data-table">
+          <thead>
+            <tr>
+              <th>PEDIDO #</th>
+              <th>DATA</th>
+              <th>MATERIAL</th>
+              <th>ESPESSURA</th>
+              <th>MODELO DA CORDA</th>
+              <th>COR</th>
+              <th>QUANTIDADE</th>
+              <th>TAMANHO DO ROLO</th>
+              <th>RESPONSÁVEL</th>
+              <th>STATUS</th>
+              <th>PRAZO</th>
+              <th>AÇÕES</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Os pedidos de produção serão adicionados dinamicamente -->
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Nova tabela: Pedidos Concluídos -->
+      <h3>Pedidos Concluídos</h3>
+      <table id="tabela-concluidos" class="data-table">
+        <thead>
+          <tr>
+            <th>Material</th>
+            <th>Espessura</th>
+            <th>Modelo</th>
+            <th>Cor</th>
+            <th>Quantidade</th>
+            <th>Tamanho</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Os pedidos concluídos serão renderizados aqui -->
+        </tbody>
+      </table>
+      
+      <h3 style="margin: 30px 0 20px 0; font-weight: 600;">Adicionar Novo Pedido para Produção</h3>
+      
+      <form id="form-producao">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="numero-prod">Pedido #</label>
+            <input type="text" id="numero-prod" class="form-control" placeholder="Número do pedido">
+          </div>
+          <div class="form-group">
+            <label for="data-prod">Data</label>
+            <input type="date" id="data-prod" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="material-prod">Material</label>
+            <select id="material-prod" class="form-control">
+              <option value="">Selecione o material</option>
+              <option value="Polipropileno">Polipropileno</option>
+              <option value="Algodão">Algodão</option>
+              <option value="Fio Náutico">Fio Náutico</option>
+              <option value="Rami">Rami</option>
+              <option value="Juta">Juta</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="espessura-prod">Espessura</label>
+            <select id="espessura-prod" class="form-control">
+              <option value="">Selecione a espessura</option>
+              <option value="2mm">2mm</option>
+              <option value="3mm">3mm</option>
+              <option value="4mm">4mm</option>
+              <option value="5mm">5mm</option>
+              <option value="6mm">6mm</option>
+              <option value="7mm">7mm</option>
+              <option value="8mm">8mm</option>
+              <option value="9mm">9mm</option>
+              <option value="10mm">10mm</option>
+              <option value="11mm">11mm</option>
+              <option value="12mm">12mm</option>
+              <option value="13mm">13mm</option>
+              <option value="14mm">14mm</option>
+              <option value="15mm">15mm</option>
+              <option value="16mm">16mm</option>
+              <option value="17mm">17mm</option>
+              <option value="18mm">18mm</option>
+              <option value="19mm">19mm</option>
+              <option value="20mm">20mm</option>
+              <option value="21mm">21mm</option>
+              <option value="22mm">22mm</option>
+              <option value="23mm">23mm</option>
+              <option value="24mm">24mm</option>
+              <option value="25mm">25mm</option>
+              <option value="10/1">10/1</option>
+              <option value="10/2">10/2</option>
+              <option value="10/3">10/3</option>
+              <option value="10/4">10/4</option>
+              <option value="3/1">3/1</option>
+              <option value="4/1">4/1</option>
+              <option value="4/2">4/2</option>
+              <option value="5/2">5/2</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="modelo-prod">Modelo da Corda</label>
+            <select id="modelo-prod" class="form-control">
+              <option value="">Selecione o modelo</option>
+              <option value="Lisa">Lisa</option>
+              <option value="Zig-Zag">Zig-Zag</option>
+              <option value="Poa">Poa</option>
+              <option value="Espiral">Espiral</option>
+              <option value="Colors">Colors</option>
+              <option value="Glamour">Glamour</option>
+              <option value="Mesclada">Mesclada</option>
+              <option value="Plana">Plana</option>
+              <option value="Fio">Fio</option>
+            </select>
+          </div>
+          <div class="form-group dropdown">
+            <label for="cor-prod">Cor</label>
+            <input type="text" id="cor-prod" class="form-control" placeholder="Digite para buscar" onclick="toggleDropdown('corProdDropdown')" oninput="filterCoresProd(this.value)">
+            <div id="corProdDropdown" class="dropdown-content">
+              <!-- As opções de cores serão copiadas do formulário de clientes -->
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="quantidade-prod">Quantidade</label>
+            <input type="number" id="quantidade-prod" class="form-control" placeholder="Quantidade">
+          </div>
+          <div class="form-group">
+            <label for="tamanho-prod">Tamanho do Rolo</label>
+            <input type="number" id="tamanho-prod" class="form-control" placeholder="Tamanho em metros">
+          </div>
+          <div class="form-group">
+            <label for="responsavel-prod">Responsável</label>
+            <input type="text" id="responsavel-prod" class="form-control" placeholder="Nome do responsável">
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="status-prod">Status</label>
+            <select id="status-prod" class="form-control">
+              <option value="aguardando">Aguardando</option>
+              <option value="producao">Em Produção</option>
+              <option value="concluido">Concluído</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="prazo-prod">Prazo</label>
+            <input type="date" id="prazo-prod" class="form-control">
+          </div>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" id="btn-salvar-prod">Adicionar Pedido</button>
+          <button type="button" class="btn btn-secondary" id="btn-cancelar-prod" style="display: none;" onclick="cancelarEdicaoProducao()">Cancelar Edição</button>
+          <input type="hidden" id="editandoIndexProducao" value="">
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
