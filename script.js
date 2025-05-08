@@ -325,10 +325,19 @@ async function salvarPedidoCliente() {
   const index = document.getElementById('editandoIndexCliente').value;
   
   if (index !== '') {
+    // Atualiza o pedido existente
     pedido.id = pedidosClientesArray[index].id;
     pedidosClientesArray[index] = pedido;
   } else {
-    pedidosClientesArray.push(pedido);
+    // Verifica se já existe um pedido igual (opcional, para evitar duplicidade)
+    const existe = pedidosClientesArray.some(p =>
+      p.numero == pedido.numero &&
+      p.data == pedido.data &&
+      p.cliente == pedido.cliente
+    );
+    if (!existe) {
+      pedidosClientesArray.push(pedido);
+    }
   }
 
   await salvarPedidos();
@@ -475,177 +484,6 @@ function converterDataParaInput(dataString) {
   return dataString;
 }
 
-// Adicionar pedido para produção
-function adicionarPedidoProducao() {
-  // Obter valores do formulário
-  const pedido = document.getElementById('pedido-prod-num').value;
-  const data = document.getElementById('data-prod').value;
-  const material = document.getElementById('material-prod').value;
-  const espessura = document.getElementById('espessura-prod').value;
-  const modelo = document.getElementById('modelo-prod').value;
-  const cor = document.getElementById('cor-prod').value;
-  const quantidade = document.getElementById('quantidade-prod').value;
-  const tamanho = document.getElementById('tamanho-prod').value;
-  const responsavel = document.getElementById('responsavel').value;
-  const status = document.getElementById('status-prod').value;
-  const prazo = document.getElementById('prazo-prod').value;
-  
-  // Validar campos obrigatórios
-  if (!pedido || !material || !espessura || !cor || !quantidade || !responsavel) {
-    return false;
-  }
-
-  const index = document.getElementById('editandoIndexProducao').value;
-  const novoPedido = {
-    numero: pedido,
-    data: formatarData(data),
-    material,
-    espessura,
-    modelo,
-    cor,
-    quantidade,
-    tamanho,
-    responsavel,
-    status,
-    prazo: formatarData(prazo)
-  };
-
-  if (index !== '') {
-    // Editar pedido existente
-    pedidosProducaoArray[index] = novoPedido;
-  } else {
-    // Adicionar novo pedido
-    pedidosProducaoArray.push(novoPedido);
-  }
-
-  salvarPedidos();
-  renderizarTabelaProducao();
-  document.getElementById('form-producao').reset();
-  document.getElementById('editandoIndexProducao').value = '';
-  document.getElementById('btnSalvarProducao').textContent = 'Adicionar Pedido';
-  document.getElementById('btnCancelarEdicaoProducao').style.display = 'none';
-  
-  return true;
-}
-
-// Função para renderizar tabela de clientes
-function renderizarTabelaClientes() {
-  const tbody = document.querySelector('#tab-clientes tbody');
-  if (!tbody) return;
-  
-  tbody.innerHTML = '';
-  
-  pedidosClientesArray.forEach((pedido, index) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${pedido.numero || ''}</td>
-      <td>${pedido.data || ''}</td>
-      <td>${pedido.cliente || ''}</td>
-      <td>${pedido.material || ''}</td>
-      <td>${pedido.espessura || ''}</td>
-      <td>${pedido.modelo || ''}</td>
-      <td>
-        <span class="color-indicator" style="background-color: ${obterCorHex(pedido.cor)}"></span>
-        ${pedido.cor || ''}
-      </td>
-      <td>${pedido.quantidade || ''}</td>
-      <td>${pedido.tamanho || ''}</td>
-      <td>${pedido.vendedor || ''}</td>
-      <td>${pedido.status || ''}</td>
-      <td>${pedido.prazo || ''}</td>
-      <td>
-        <button class="btn btn-edit" onclick="editarPedidoCliente(${index})">Editar</button>
-        <button class="btn btn-delete" onclick="excluirPedidoCliente(${index})">Excluir</button>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-// Função para renderizar tabela de produção
-function renderizarTabelaProducao() {
-  const tbody = document.querySelector('#tabela-producao tbody');
-  if (!tbody) return;
-
-  tbody.innerHTML = '';
-  pedidosProducaoArray.forEach((pedido, index) => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${pedido.numero || ''}</td>
-      <td>${pedido.data || ''}</td>
-      <td>${pedido.material || ''}</td>
-      <td>${pedido.espessura || ''}</td>
-      <td>${pedido.modelo || ''}</td>
-      <td>
-        <span class="color-indicator" style="background-color: ${obterCorHex(pedido.cor)}"></span>
-        ${pedido.cor || ''}
-      </td>
-      <td>${pedido.quantidade || ''}</td>
-      <td>${pedido.tamanho || ''}</td>
-      <td>${pedido.responsavel || ''}</td>
-      <td>${pedido.status || ''}</td>
-      <td>${pedido.prazo || ''}</td>
-      <td style="vertical-align: middle;">
-        <div style="display: flex; flex-direction: column; gap: 4px; align-items: stretch;">
-          <button class="btn btn-edit" onclick="editarPedidoProducao(${index})">Editar</button>
-          <button class="btn btn-delete" onclick="excluirPedidoProducao(${index})">Excluir</button>
-          <button class="btn btn-success" onclick="concluirPedidoProducao(${index})">Concluído</button>
-        </div>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-// Função para atualizar a tabela de produção
-function atualizarTabelaProducao() {
-    const tabelaBody = document.querySelector('#tab-producao .data-table tbody');
-    tabelaBody.innerHTML = ''; // Limpa a tabela antes de renderizar
-
-    pedidosProducaoArray.forEach((pedido, index) => {
-        const row = document.createElement('tr');
-
-        row.innerHTML = `
-            <td>${pedido.numero}</td>
-            <td>${pedido.data}</td>
-            <td>${pedido.material}</td>
-            <td>${pedido.espessura}</td>
-            <td>${pedido.modelo}</td>
-            <td>
-                <span class="color-indicator" style="background-color: ${pedido.cor};"></span>
-                ${pedido.cor}
-            </td>
-            <td>${pedido.quantidade}</td>
-            <td>${pedido.tamanho}</td>
-            <td class="action-buttons">
-                <button class="btn btn-edit" onclick="editarPedidoProducao(${index})">Editar</button>
-                <button class="btn btn-delete" onclick="excluirPedidoProducao(${index})">Excluir</button>
-            </td>
-        `;
-
-        tabelaBody.appendChild(row);
-    });
-}
-
-// Função para copiar as opções de cores do formulário de clientes para o formulário de produção
-function copiarOpcoesCores() {
-  const corDropdownCliente = document.getElementById('corDropdown');
-  const corDropdownProducao = document.getElementById('corProdDropdown');
-  
-  if (corDropdownCliente && corDropdownProducao) {
-    // Copiar todo o conteúdo do dropdown de clientes
-    corDropdownProducao.innerHTML = corDropdownCliente.innerHTML;
-    
-    // Atualizar os eventos onclick para usar selectCorProd
-    const items = corDropdownProducao.getElementsByClassName('color-list-item');
-    for (let item of items) {
-      const cor = item.textContent.trim();
-      const hex = item.querySelector('.color-sample').style.backgroundColor;
-      item.onclick = () => selectCorProd(cor, hex);
-    }
-  }
-}
-
 // Função para salvar pedido de produção
 async function salvarPedidoProducao() {
   const numero = document.getElementById('numero-prod').value || obterProximoNumeroPedido('producao');
@@ -685,7 +523,21 @@ async function salvarPedidoProducao() {
     pedido.id = pedidosProducaoArray[editandoIndex].id;
     pedidosProducaoArray[editandoIndex] = pedido;
   } else {
-    pedidosProducaoArray.push(pedido);
+    // Verifica se já existe um pedido igual para evitar duplicidade
+    const existe = pedidosProducaoArray.some(p =>
+      p.numero == pedido.numero &&
+      p.data == pedido.data &&
+      p.material == pedido.material &&
+      p.espessura == pedido.espessura &&
+      p.cor == pedido.cor &&
+      p.quantidade == pedido.quantidade
+    );
+    if (!existe) {
+      pedidosProducaoArray.push(pedido);
+    } else {
+      mostrarMensagem('Este pedido já existe na lista de produção!');
+      return false;
+    }
   }
 
   await salvarPedidos();
