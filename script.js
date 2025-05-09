@@ -32,25 +32,25 @@ async function carregarDados() {
 
 // Função para inicializar as datas
 function inicializarDatas() {
-    const hoje = new Date().toISOString().split('T')[0];
-    
-    // Inicializar data e prazo do formulário de cliente
-    const dataCliente = document.getElementById('data');
-    const prazoCliente = document.getElementById('prazo');
-    if (dataCliente) dataCliente.value = hoje;
-    if (prazoCliente) {
-        const prazo = calcularDiasUteis(hoje, 10);
-        prazoCliente.value = prazo.toISOString().split('T')[0];
-    }
-    
-    // Inicializar data e prazo do formulário de produção
-    const dataProducao = document.getElementById('data-prod');
-    const prazoProducao = document.getElementById('prazo-prod');
-    if (dataProducao) dataProducao.value = hoje;
-    if (prazoProducao) {
-        const prazo = calcularDiasUteis(hoje, 10);
-        prazoProducao.value = prazo.toISOString().split('T')[0];
-    }
+  const hoje = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+
+  // Inicializar data e prazo do formulário de cliente
+  const dataCliente = document.getElementById('data');
+  const prazoCliente = document.getElementById('prazo');
+  if (dataCliente) dataCliente.value = hoje;
+  if (prazoCliente) {
+    const prazo = calcularDiasUteis(hoje, 10);
+    prazoCliente.value = prazo.toISOString().split('T')[0];
+  }
+
+  // Inicializar data e prazo do formulário de produção
+  const dataProducao = document.getElementById('data-prod');
+  const prazoProducao = document.getElementById('prazo-prod');
+  if (dataProducao) dataProducao.value = hoje;
+  if (prazoProducao) {
+    const prazo = calcularDiasUteis(hoje, 10);
+    prazoProducao.value = prazo.toISOString().split('T')[0];
+  }
 }
 
 // Função para copiar opções de cores
@@ -139,8 +139,8 @@ async function excluirPedidoConcluido(index) {
 // Editar pedido de cliente
 function editarPedidoCliente(index) {
   const pedido = pedidosClientesArray[index];
-  document.getElementById('pedido-num').value = pedido.numero || '';
   document.getElementById('data').value = converterDataParaInput(pedido.data) || '';
+  document.getElementById('pedido-num').value = pedido.numero || '';
   document.getElementById('cliente').value = pedido.cliente || '';
   document.getElementById('material').value = pedido.material || '';
   document.getElementById('espessura').value = pedido.espessura || '';
@@ -161,10 +161,10 @@ function editarPedidoCliente(index) {
 // Editar pedido de produção
 function editarPedidoProducao(index) {
   const pedido = pedidosProducaoArray[index];
+  document.getElementById('data-prod').value = converterDataParaInput(pedido.data) || '';
   if (!pedido) return;
 
   document.getElementById('numero-prod').value = pedido.numero || '';
-  document.getElementById('data-prod').value = converterDataParaInput(pedido.data) || '';
   document.getElementById('material-prod').value = pedido.material || '';
   document.getElementById('espessura-prod').value = pedido.espessura || '';
   document.getElementById('modelo-prod').value = pedido.modelo || '';
@@ -319,7 +319,7 @@ async function salvarPedidoCliente() {
 
   const pedido = { 
     numero, 
-    data: formatarData(data), 
+    data: formatarData(data), // Salva a data no formato DD/MM/AAAA
     cliente, 
     material, 
     espessura, 
@@ -376,14 +376,13 @@ function cancelarEdicaoCliente() {
 function renderizarTabelaClientes() {
   const tbody = document.querySelector('#tab-clientes tbody');
   if (!tbody) return;
-  
+
   tbody.innerHTML = '';
-  
   pedidosClientesArray.forEach((pedido, index) => {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${pedido.numero || ''}</td>
-      <td>${pedido.data || ''}</td>
+      <td>${formatarData(pedido.data) || ''}</td>
       <td>${pedido.cliente || ''}</td>
       <td>${pedido.material || ''}</td>
       <td>${pedido.espessura || ''}</td>
@@ -416,7 +415,7 @@ function renderizarTabelaProducao() {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${pedido.numero || ''}</td>
-      <td>${pedido.data || ''}</td>
+      <td>${formatarData(pedido.data) || ''}</td>
       <td>${pedido.material || ''}</td>
       <td>${pedido.espessura || ''}</td>
       <td>${pedido.modelo || ''}</td>
@@ -543,7 +542,7 @@ async function salvarPedidoProducao() {
 
   const pedido = {
     numero,
-    data: formatarData(data),
+    data: formatarData(data), // Salva a data no formato DD/MM/AAAA
     material,
     espessura,
     modelo,
