@@ -32,7 +32,7 @@ async function carregarDados() {
 
 // Função para inicializar as datas
 function inicializarDatas() {
-  const hoje = obterDataAtual(); // Utiliza a função obterDataAtual
+  const hoje = obterDataAtual(); // Formato YYYY-MM-DD
 
   // Inicializar data e prazo do formulário de cliente
   const dataCliente = document.getElementById('data');
@@ -319,7 +319,7 @@ async function salvarPedidoCliente() {
 
   const pedido = { 
     numero, 
-    data: formatarData(data), // Salva a data no formato DD/MM/AAAA
+    data: converterDataParaInput(data), // Salva a data no formato YYYY-MM-DD
     cliente, 
     material, 
     espessura, 
@@ -487,27 +487,23 @@ function selectCorProd(nome, cor) {
 // Formatar data DD/MM/AAAA
 function formatarData(dataString) {
   if (!dataString) return '';
-  
-  const data = new Date(dataString);
-  if (isNaN(data.getTime())) return dataString; // Retorna como está se a data for inválida
-  
-  const dia = String(data.getDate()).padStart(2, '0');
-  const mes = String(data.getMonth() + 1).padStart(2, '0');
-  const ano = data.getFullYear();
-  
+
+  const [ano, mes, dia] = dataString.split('-');
+  if (!ano || !mes || !dia) return dataString; // Retorna como está se a data for inválida
+
   return `${dia}/${mes}/${ano}`;
 }
 
 // Converter data do formato DD/MM/AAAA para YYYY-MM-DD (formato do input date)
 function converterDataParaInput(dataString) {
   if (!dataString) return '';
-  
+
   if (dataString.includes('/')) {
     const [dia, mes, ano] = dataString.split('/');
     return `${ano}-${mes}-${dia}`;
   }
-  
-  return dataString;
+
+  return dataString; // Retorna como está se já estiver no formato correto
 }
 
 // Função para salvar pedido de produção
