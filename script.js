@@ -502,11 +502,6 @@ function formatarData(dataString) {
 function converterDataParaInput(dataString) {
   if (!dataString) return '';
   
-  // Se já estiver no formato YYYY-MM-DD, retorna como está
-  if (dataString.includes('-')) {
-    return dataString;
-  }
-  
   if (dataString.includes('/')) {
     const [dia, mes, ano] = dataString.split('/');
     return `${ano}-${mes}-${dia}`;
