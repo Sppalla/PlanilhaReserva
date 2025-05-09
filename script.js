@@ -32,7 +32,7 @@ async function carregarDados() {
 
 // Função para inicializar as datas
 function inicializarDatas() {
-  const hoje = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+  const hoje = obterDataAtual(); // Utiliza a função obterDataAtual
 
   // Inicializar data e prazo do formulário de cliente
   const dataCliente = document.getElementById('data');
@@ -139,7 +139,7 @@ async function excluirPedidoConcluido(index) {
 // Editar pedido de cliente
 function editarPedidoCliente(index) {
   const pedido = pedidosClientesArray[index];
-  document.getElementById('data').value = converterDataParaInput(pedido.data) || '';
+  document.getElementById('data').value = converterDataParaInput(pedido.data) || obterDataAtual();
   document.getElementById('pedido-num').value = pedido.numero || '';
   document.getElementById('cliente').value = pedido.cliente || '';
   document.getElementById('material').value = pedido.material || '';
@@ -161,7 +161,7 @@ function editarPedidoCliente(index) {
 // Editar pedido de produção
 function editarPedidoProducao(index) {
   const pedido = pedidosProducaoArray[index];
-  document.getElementById('data-prod').value = converterDataParaInput(pedido.data) || '';
+  document.getElementById('data-prod').value = converterDataParaInput(pedido.data) || obterDataAtual();
   if (!pedido) return;
 
   document.getElementById('numero-prod').value = pedido.numero || '';
@@ -228,7 +228,7 @@ if (formCliente) {
     }
   });
   formCliente.addEventListener('reset', function() {
-    const hoje = new Date().toISOString().split('T')[0];
+    const hoje = obterDataAtual(); // Utiliza a função obterDataAtual
     document.getElementById('data').value = hoje;
     const prazo = calcularDiasUteis(hoje, 10).toISOString().split('T')[0];
     document.getElementById('prazo').value = prazo;
@@ -246,7 +246,7 @@ if (formProducao) {
     }
   });
   formProducao.addEventListener('reset', function() {
-    const hoje = new Date().toISOString().split('T')[0];
+    const hoje = obterDataAtual(); // Utiliza a função obterDataAtual
     document.getElementById('data-prod').value = hoje;
     const prazoProd = calcularDiasUteis(hoje, 10).toISOString().split('T')[0];
     document.getElementById('prazo-prod').value = prazoProd;
@@ -356,7 +356,7 @@ async function salvarPedidoCliente() {
   document.getElementById('form-cliente').reset();
   
   // Restaurar data atual e prazo padrão
-  const hoje = new Date().toISOString().split('T')[0];
+  const hoje = obterDataAtual(); // Utiliza a função obterDataAtual
   document.getElementById('data').value = hoje;
   const prazoDefault = calcularDiasUteis(hoje, 10).toISOString().split('T')[0];
   document.getElementById('prazo').value = prazoDefault;
@@ -488,13 +488,8 @@ function selectCorProd(nome, cor) {
 function formatarData(dataString) {
   if (!dataString) return '';
   
-  // Se já estiver no formato DD/MM/AAAA, retorna como está
-  if (dataString.includes('/')) {
-    return dataString;
-  }
-  
   const data = new Date(dataString);
-  if (isNaN(data.getTime())) return dataString;
+  if (isNaN(data.getTime())) return dataString; // Retorna como está se a data for inválida
   
   const dia = String(data.getDate()).padStart(2, '0');
   const mes = String(data.getMonth() + 1).padStart(2, '0');
@@ -713,7 +708,7 @@ async function editarPedidoConcluido(index) {
   // Corrigir data: se não houver, usar data de hoje
   let dataValue = converterDataParaInput(pedido.data) || '';
   if (!dataValue) {
-    dataValue = new Date().toISOString().split('T')[0];
+    dataValue = obterDataAtual(); // Utiliza a função obterDataAtual
   }
   document.getElementById('data-prod').value = dataValue;
   document.getElementById('material-prod').value = pedido.material || '';
@@ -728,6 +723,13 @@ async function editarPedidoConcluido(index) {
   document.getElementById('prazo-prod').value = '';
   // Rola até o formulário
   document.getElementById('form-producao').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Função para obter a data atual no formato YYYY-MM-DD
+function obterDataAtual() {
+  const hoje = new Date();
+  hoje.setMinutes(hoje.getMinutes() - hoje.getTimezoneOffset()); // Ajusta o fuso horário
+  return hoje.toISOString().split('T')[0]; // Retorna no formato YYYY-MM-DD
 }
 
 
