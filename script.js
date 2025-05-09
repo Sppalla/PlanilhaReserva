@@ -53,6 +53,16 @@ function inicializarDatas() {
     }
 }
 
+// Função para copiar opções de cores
+function copiarOpcoesCores() {
+  const dropdownCliente = document.getElementById('corDropdown');
+  const dropdownProducao = document.getElementById('corProdDropdown');
+
+  if (dropdownCliente && dropdownProducao) {
+    dropdownProducao.innerHTML = dropdownCliente.innerHTML;
+  }
+}
+
 // Chamar carregarDados quando a página carregar
 document.addEventListener('DOMContentLoaded', function() {
     carregarDados();
@@ -362,45 +372,72 @@ function cancelarEdicaoCliente() {
   document.getElementById('form-cliente').reset();
 }
 
-// Função para atualizar a tabela de clientes
-function atualizarTabelaClientes() {
-const tbody = document.querySelector('#tab-clientes .data-table tbody');
-tbody.innerHTML = '';
-
-pedidosClientesArray.forEach((pedido, index) => {
-  const tr = document.createElement('tr');
+// Função para renderizar tabela de clientes
+function renderizarTabelaClientes() {
+  const tbody = document.querySelector('#tab-clientes tbody');
+  if (!tbody) return;
   
-  tr.innerHTML = `
-    <td>${pedido.pedidoNum}</td>
-    <td>${pedido.data}</td>
-    <td>${pedido.cliente}</td>
-    <td>${pedido.material}</td>
-    <td>${pedido.espessura}</td>
-    <td>${pedido.modelo}</td>
-    <td>${pedido.cor}</td>
-    <td>${pedido.quantidade}</td>
-    <td>${pedido.tamanho}</td>
-    <td>${pedido.vendedor}</td>
-    <td>${pedido.status}</td>
-    <td>${pedido.prazo}</td>
-    <td>
-      <button class="btn btn-edit" onclick="editarPedidoCliente(${index})">Editar</button>
-      <button class="btn btn-delete" onclick="excluirPedidoCliente(${index})">Excluir</button>
-    </td>
-  `;
+  tbody.innerHTML = '';
   
-  tbody.appendChild(tr);
-});
+  pedidosClientesArray.forEach((pedido, index) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${pedido.numero || ''}</td>
+      <td>${pedido.data || ''}</td>
+      <td>${pedido.cliente || ''}</td>
+      <td>${pedido.material || ''}</td>
+      <td>${pedido.espessura || ''}</td>
+      <td>${pedido.modelo || ''}</td>
+      <td>
+        <span class="color-indicator" style="background-color: ${obterCorHex(pedido.cor)}"></span>
+        ${pedido.cor || ''}
+      </td>
+      <td>${pedido.quantidade || ''}</td>
+      <td>${pedido.tamanho || ''}</td>
+      <td>${pedido.vendedor || ''}</td>
+      <td>${pedido.status || ''}</td>
+      <td>${pedido.prazo || ''}</td>
+      <td>
+        <button class="btn btn-edit" onclick="editarPedidoCliente(${index})">Editar</button>
+        <button class="btn btn-delete" onclick="excluirPedidoCliente(${index})">Excluir</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
-// Adicionar eventos aos botões de edição e exclusão
-function adicionarEventosBotoes() {
-  document.querySelectorAll('.btn-editar').forEach((botao, index) => {
-      botao.addEventListener('click', async () => await editarPedidoCliente(index));
-  });
+// Função para renderizar tabela de produção
+function renderizarTabelaProducao() {
+  const tbody = document.querySelector('#tabela-producao tbody');
+  if (!tbody) return;
 
-  document.querySelectorAll('.btn-danger').forEach((botao, index) => {
-      botao.addEventListener('click', async () => await excluirPedidoCliente(index));
+  tbody.innerHTML = '';
+  pedidosProducaoArray.forEach((pedido, index) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${pedido.numero || ''}</td>
+      <td>${pedido.data || ''}</td>
+      <td>${pedido.material || ''}</td>
+      <td>${pedido.espessura || ''}</td>
+      <td>${pedido.modelo || ''}</td>
+      <td>
+        <span class="color-indicator" style="background-color: ${obterCorHex(pedido.cor)}"></span>
+        ${pedido.cor || ''}
+      </td>
+      <td>${pedido.quantidade || ''}</td>
+      <td>${pedido.tamanho || ''}</td>
+      <td>${pedido.responsavel || ''}</td>
+      <td>${pedido.status || ''}</td>
+      <td>${pedido.prazo || ''}</td>
+      <td style="vertical-align: middle;">
+        <div style="display: flex; flex-direction: column; gap: 4px; align-items: stretch;">
+          <button class="btn btn-edit" onclick="editarPedidoProducao(${index})">Editar</button>
+          <button class="btn btn-delete" onclick="excluirPedidoProducao(${index})">Excluir</button>
+          <button class="btn btn-success" onclick="concluirPedidoProducao(${index})">Concluído</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
   });
 }
 
@@ -500,6 +537,7 @@ async function salvarPedidoProducao() {
 
   // Verificar campos obrigatórios
   if (!data || !material || !espessura || !cor || !quantidade || !responsavel) {
+    mostrarMensagem('Por favor, preencha todos os campos obrigatórios!');
     return false;
   }
 
@@ -517,13 +555,12 @@ async function salvarPedidoProducao() {
     prazo: formatarData(prazo)
   };
 
-  // Verificar se está editando um pedido existente
   const editandoIndex = document.getElementById('editandoIndexProducao')?.value;
   if (editandoIndex !== undefined && editandoIndex !== '') {
-    pedido.id = pedidosProducaoArray[editandoIndex].id;
+    // Atualiza o pedido existente
     pedidosProducaoArray[editandoIndex] = pedido;
   } else {
-    // Verifica se já existe um pedido igual para evitar duplicidade
+    // Verifica duplicidade
     const existe = pedidosProducaoArray.some(p =>
       p.numero == pedido.numero &&
       p.data == pedido.data &&
@@ -542,20 +579,10 @@ async function salvarPedidoProducao() {
 
   await salvarPedidos();
   renderizarTabelaProducao();
-  
+
   // Limpar o formulário
   document.getElementById('form-producao').reset();
-  
-  // Restaurar data atual e prazo padrão
-  const hoje = new Date().toISOString().split('T')[0];
-  document.getElementById('data-prod').value = hoje;
-  const prazoDefault = calcularDiasUteis(hoje, 10).toISOString().split('T')[0];
-  document.getElementById('prazo-prod').value = prazoDefault;
-  
-  // Resetar o estado de edição
-  if (document.getElementById('editandoIndexProducao')) {
-    document.getElementById('editandoIndexProducao').value = '';
-  }
+  document.getElementById('editandoIndexProducao').value = '';
   document.getElementById('btn-salvar-prod').textContent = 'Adicionar Pedido';
   document.getElementById('btn-cancelar-prod').style.display = 'none';
 
