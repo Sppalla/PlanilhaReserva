@@ -42,11 +42,10 @@ body {
 .header-content {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between; /* Espaça os elementos logo e texto */
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
-    position: relative;
 }
 
 .header-logo {
@@ -60,13 +59,11 @@ body {
 
 /* Estilo para o texto "Casa das Cordas RS" */
 .header-text {
-    font-size: 50px; /* Tamanho do texto padrão */
+    font-size: 2rem; /* Tamanho do texto padrão */
     font-weight: bold;
     color: var(--primary); /* Define a cor laranja */
-    text-align: left; /* Alinha o texto à esquerda */
-    white-space: nowrap; /* Evita quebra de linha */
-    overflow: hidden; /* Esconde o texto que ultrapassar */
-    text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
+    text-align: center; /* Centraliza o texto */
+    flex-grow: 1; /* Faz o texto ocupar o espaço restante */
 }
 
 .header-title {
@@ -410,8 +407,17 @@ body {
       width: 100%;
     }
     
+    .header-content {
+        flex-direction: column; /* Empilha os elementos verticalmente */
+        align-items: center;
+    }
+
+    .header-logo {
+        margin-bottom: 10px; /* Adiciona espaço entre a logo e o texto */
+    }
+
     .header-text {
-        font-size: 1.2rem; /* Reduz o tamanho do texto em telas menores */
+        font-size: 1.7rem; /* Reduz o tamanho do texto em telas menores */
         text-align: center; /* Centraliza o texto em dispositivos móveis */
         white-space: normal; /* Permite quebra de linha */
     }
