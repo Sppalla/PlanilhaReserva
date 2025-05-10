@@ -29,17 +29,17 @@ body {
   }
 
 .header-container {
-    padding: 40px 0; /* Aumenta o espaçamento interno vertical */
+    padding: 40px 0; /* Espaçamento interno */
     margin-bottom: 20px;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
     margin: 0 auto 20px auto;
-    min-height: 200px; /* Define uma altura mínima maior para a barra branca */
+    min-height: 200px; /* Altura mínima */
     display: flex;
-    align-items: center; /* Centraliza os elementos verticalmente */
-    position: relative; /* Permite posicionar a logo */
+    align-items: center; /* Centraliza verticalmente */
+    position: relative;
 }
 
 .header-content {
@@ -48,23 +48,20 @@ body {
 }
 
 .header-logo {
-    position: absolute; /* Posiciona a logo no canto esquerdo */
-    left: 20px; /* Ajusta a distância da logo em relação à borda esquerda */
-    top: 50%; /* Centraliza verticalmente */
-    transform: translateY(-50%); /* Ajusta o alinhamento vertical */
-    width: 120px; /* Reduz o tamanho da logo para dispositivos móveis */
+    width: 150px; /* Aumenta o tamanho da logo */
     height: auto;
     border-radius: 20px;
     border-style: groove;
     border-color: #0e15a7;
+    margin-right: 20px; /* Espaço entre a logo e o texto */
 }
 
 /* Estilo para o texto "Casa das Cordas RS" */
 .header-text {
-    font-size: 2rem; /* Tamanho do texto padrão */
+    font-size: 2.5rem; /* Aumenta o tamanho do título */
     font-weight: bold;
-    color: var(--primary); /* Define a cor laranja */
-    text-align: center; /* Centraliza o texto */
+    color: var(--primary); /* Cor laranja */
+    text-align: left; /* Alinha o texto à esquerda */
 }
 
 .header-title {
@@ -409,15 +406,15 @@ body {
     }
     
     .header-container {
-        padding: 50px 0; /* Aumenta o espaçamento interno em dispositivos móveis */
-        min-height: 250px; /* Garante mais espaço para a logo e o texto */
+        flex-direction: row; /* Alinha os elementos lado a lado */
+        justify-content: center; /* Centraliza horizontalmente */
+        padding: 20px; /* Reduz o espaçamento interno */
+        min-height: 150px; /* Reduz a altura mínima */
     }
 
     .header-logo {
-        position: static; /* Remove o posicionamento absoluto */
-        margin-bottom: 10px; /* Adiciona espaço entre a logo e o texto */
-        transform: none; /* Remove o ajuste vertical */
-        width: 100px; /* Reduz o tamanho da logo em dispositivos móveis */
+        width: 100px; /* Reduz o tamanho da logo */
+        margin-right: 15px; /* Espaço entre a logo e o texto */
     }
 
     .header-content {
@@ -426,8 +423,8 @@ body {
     }
 
     .header-text {
-        font-size: 1.5rem; /* Reduz o tamanho do texto em dispositivos móveis */
-        text-align: center; /* Centraliza o texto */
+        font-size: 1.8rem; /* Reduz o tamanho do título */
+        text-align: left; /* Mantém o texto alinhado à esquerda */
     }
   }
 
