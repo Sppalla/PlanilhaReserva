@@ -39,22 +39,19 @@ body {
     min-height: 150px; /* Define uma altura mínima para a barra branca */
     display: flex;
     align-items: center; /* Centraliza os elementos verticalmente */
-    justify-content: center; /* Centraliza os elementos horizontalmente */
+    position: relative; /* Permite posicionar a logo */
 }
 
 .header-content {
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centraliza os elementos horizontalmente */
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    position: relative; /* Permite posicionar a logo */
+    flex: 1; /* Faz o conteúdo ocupar o espaço restante */
+    text-align: center; /* Centraliza o texto horizontalmente */
 }
 
 .header-logo {
     position: absolute; /* Posiciona a logo no canto esquerdo */
     left: 20px; /* Ajusta a distância da logo em relação à borda esquerda */
+    top: 50%; /* Centraliza verticalmente */
+    transform: translateY(-50%); /* Ajusta o alinhamento vertical */
     width: 150px;
     height: auto;
     border-radius: 20px;
@@ -68,7 +65,6 @@ body {
     font-weight: bold;
     color: var(--primary); /* Define a cor laranja */
     text-align: center; /* Centraliza o texto */
-    flex-grow: 1; /* Faz o texto ocupar o espaço restante */
 }
 
 .header-title {
