@@ -42,16 +42,18 @@ body {
 .header-content {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Espaça os elementos logo e texto */
+    justify-content: center; /* Centraliza os elementos horizontalmente */
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+    position: relative; /* Permite posicionar a logo */
 }
 
 .header-logo {
+    position: absolute; /* Posiciona a logo no canto esquerdo */
+    left: 20px; /* Ajusta a distância da logo em relação à borda esquerda */
     width: 150px;
     height: auto;
-    margin-right: 15px;
     border-radius: 20px;
     border-style: groove;
     border-color: #0e15a7;
@@ -419,7 +421,7 @@ body {
     .header-text {
         font-size: 1.7rem; /* Reduz o tamanho do texto em telas menores */
         text-align: center; /* Centraliza o texto em dispositivos móveis */
-        white-space: normal; /* Permite quebra de linha */
+
     }
   }
 
