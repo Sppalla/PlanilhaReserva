@@ -58,14 +58,14 @@ body {
     border-color: #0e15a7;
 }
 
+/* Estilo para o texto "Casa das Cordas RS" */
 .header-text {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    margin: 0 auto;
-    position: relative;
-    left: -75px;
+    font-size: 1.5rem; /* Tamanho do texto padrão */
+    font-weight: bold;
+    text-align: center; /* Centraliza o texto */
+    white-space: nowrap; /* Evita quebra de linha */
+    overflow: hidden; /* Esconde o texto que ultrapassar */
+    text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo */
 }
 
 .header-title {
@@ -407,6 +407,12 @@ body {
     
     .tab-button {
       width: 100%;
+    }
+    
+    .header-text {
+        font-size: 1.2rem; /* Reduz o tamanho do texto em telas menores */
+        white-space: normal; /* Permite quebra de linha */
+        text-align: center; /* Centraliza o texto */
     }
   }
 
