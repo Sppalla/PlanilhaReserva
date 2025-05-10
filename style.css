@@ -39,6 +39,7 @@ body {
     min-height: 200px; /* Altura mínima */
     display: flex;
     align-items: center; /* Centraliza verticalmente */
+    justify-content: space-between; /* Espaça os elementos */
     position: relative;
 }
 
@@ -53,7 +54,7 @@ body {
     border-radius: 20px;
     border-style: groove;
     border-color: #0e15a7;
-    margin-right: 20px; /* Espaço entre a logo e o texto */
+    margin-left: 20px; /* Espaço à esquerda */
 }
 
 /* Estilo para o texto "Casa das Cordas RS" */
@@ -407,15 +408,15 @@ body {
     }
     
     .header-container {
-        flex-direction: row; /* Alinha os elementos lado a lado */
-        justify-content: center; /* Centraliza horizontalmente */
+        flex-direction: row; /* Mantém os elementos lado a lado */
+        justify-content: space-between; /* Espaça os elementos */
         padding: 20px; /* Reduz o espaçamento interno */
         min-height: 150px; /* Reduz a altura mínima */
     }
 
     .header-logo {
         width: 100px; /* Reduz o tamanho da logo */
-        margin-right: 15px; /* Espaço entre a logo e o texto */
+        margin-left: 10px; /* Espaço à esquerda */
     }
 
     .header-content {
@@ -425,7 +426,7 @@ body {
 
     .header-text {
         font-size: 1.8rem; /* Reduz o tamanho do título */
-        text-align: left; /* Mantém o texto alinhado à esquerda */
+        text-align: center; /* Centraliza o texto */
     }
   }
 
