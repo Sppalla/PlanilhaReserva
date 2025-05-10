@@ -48,7 +48,7 @@ body {
 }
 
 .header-logo {
-    width: 150px; /* Aumenta o tamanho da logo */
+    width: 150px; /* Tamanho da logo */
     height: auto;
     border-radius: 20px;
     border-style: groove;
@@ -58,10 +58,11 @@ body {
 
 /* Estilo para o texto "Casa das Cordas RS" */
 .header-text {
-    font-size: 2.5rem; /* Aumenta o tamanho do título */
+    font-size: 2.5rem; /* Tamanho do título */
     font-weight: bold;
     color: var(--primary); /* Cor laranja */
-    text-align: left; /* Alinha o texto à esquerda */
+    text-align: center; /* Centraliza o texto */
+    flex: 1; /* Faz o texto ocupar o espaço restante */
 }
 
 .header-title {
