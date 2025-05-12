@@ -99,11 +99,45 @@ function toggleDropdown(dropdownId) {
   }
 }
 
-// Fechar dropdowns quando clicar fora
+// Fechar dropdowns ao clicar fora
 document.addEventListener('click', function () {
     document.querySelectorAll('.dropdown-content').forEach(dropdown => {
         dropdown.classList.remove('active');
     });
+});
+
+// Adicionar evento ao documento para delegação
+document.addEventListener('click', function (event) {
+    // Verifica se o clique foi em um botão de dropdown
+    if (event.target.matches('.dropdown-toggle')) {
+        event.stopPropagation();
+        const dropdownContent = event.target.nextElementSibling;
+        if (dropdownContent) {
+            dropdownContent.classList.toggle('active');
+        }
+    }
+
+    // Verifica se o clique foi em um item de cor
+    if (event.target.closest('.color-list-item')) {
+        event.stopPropagation();
+        const item = event.target.closest('.color-list-item');
+        const selectedColorName = item.textContent.trim();
+        const selectedColorValue = item.querySelector('.color-sample').style.backgroundColor;
+
+        // Atualiza o campo de entrada com o nome da cor
+        const inputField = item.closest('.dropdown').querySelector('input');
+        if (inputField) {
+            inputField.value = selectedColorName;
+        }
+
+        // Fecha o dropdown
+        const dropdownContent = item.closest('.dropdown-content');
+        if (dropdownContent) {
+            dropdownContent.classList.remove('active');
+        }
+
+        console.log('Cor selecionada:', selectedColorName, selectedColorValue);
+    }
 });
 
 // Excluir pedido de cliente

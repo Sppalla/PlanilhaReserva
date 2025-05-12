@@ -448,7 +448,7 @@ body {
   background-color: #0e15a7 !important;
   color: #fff !important;
   border: none;
-  transition: background 0.2s;
+  transition: 0.2s;
 }
 .btn-success:hover {
   background-color: #232be0 !important;
