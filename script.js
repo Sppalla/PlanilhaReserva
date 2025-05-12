@@ -99,20 +99,19 @@ function toggleDropdown(dropdownId) {
   }
 }
 
-// Fechar dropdowns ao clicar fora
-document.addEventListener('click', function () {
-    document.querySelectorAll('.dropdown-content').forEach(dropdown => {
-        dropdown.classList.remove('active');
-    });
-});
-
-// Adicionar evento ao documento para delegação
+// Delegação de eventos para dropdowns
 document.addEventListener('click', function (event) {
     // Verifica se o clique foi em um botão de dropdown
     if (event.target.matches('.dropdown-toggle')) {
         event.stopPropagation();
         const dropdownContent = event.target.nextElementSibling;
         if (dropdownContent) {
+            // Fecha todos os outros dropdowns antes de abrir o atual
+            document.querySelectorAll('.dropdown-content.active').forEach(activeDropdown => {
+                if (activeDropdown !== dropdownContent) {
+                    activeDropdown.classList.remove('active');
+                }
+            });
             dropdownContent.classList.toggle('active');
         }
     }
@@ -138,6 +137,13 @@ document.addEventListener('click', function (event) {
 
         console.log('Cor selecionada:', selectedColorName, selectedColorValue);
     }
+});
+
+// Fechar todos os dropdowns ao clicar fora
+document.addEventListener('click', function () {
+    document.querySelectorAll('.dropdown-content.active').forEach(dropdown => {
+        dropdown.classList.remove('active');
+    });
 });
 
 // Excluir pedido de cliente
