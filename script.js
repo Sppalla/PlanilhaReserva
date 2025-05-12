@@ -723,6 +723,23 @@ function obterDataAtual() {
   return hoje.toISOString().split('T')[0]; // Retorna no formato YYYY-MM-DD
 }
 
+// Adicionar eventos para dropdowns e seleção de cores
+document.querySelectorAll('.dropdown-toggle').forEach(button => {
+    button.addEventListener('click', function () {
+        const dropdownContent = this.nextElementSibling;
+        dropdownContent.classList.toggle('active');
+    });
+});
+
+document.querySelectorAll('.color-list-item').forEach(item => {
+    item.addEventListener('click', function () {
+        const selectedColor = this.querySelector('.color-sample').style.backgroundColor;
+        console.log('Cor selecionada:', selectedColor);
+        // Feche o dropdown após a seleção
+        this.closest('.dropdown-content').classList.remove('active');
+    });
+});
+
 
 
 
