@@ -100,13 +100,10 @@ function toggleDropdown(dropdownId) {
 }
 
 // Fechar dropdowns quando clicar fora
-document.addEventListener('click', function(event) {
-  const dropdowns = document.getElementsByClassName('dropdown-content');
-  for (let dropdown of dropdowns) {
-    if (!event.target.closest('.dropdown')) {
-      dropdown.style.display = 'none';
-    }
-  }
+document.addEventListener('click', function () {
+    document.querySelectorAll('.dropdown-content').forEach(dropdown => {
+        dropdown.classList.remove('active');
+    });
 });
 
 // Excluir pedido de cliente
@@ -725,18 +722,32 @@ function obterDataAtual() {
 
 // Adicionar eventos para dropdowns e seleção de cores
 document.querySelectorAll('.dropdown-toggle').forEach(button => {
-    button.addEventListener('click', function () {
+    button.addEventListener('click', function (event) {
+        event.stopPropagation(); // Impede que o clique feche o dropdown
         const dropdownContent = this.nextElementSibling;
         dropdownContent.classList.toggle('active');
     });
 });
 
 document.querySelectorAll('.color-list-item').forEach(item => {
-    item.addEventListener('click', function () {
-        const selectedColor = this.querySelector('.color-sample').style.backgroundColor;
-        console.log('Cor selecionada:', selectedColor);
-        // Feche o dropdown após a seleção
-        this.closest('.dropdown-content').classList.remove('active');
+    item.addEventListener('click', function (event) {
+        event.stopPropagation(); // Impede que o clique feche o dropdown imediatamente
+        const selectedColorName = this.textContent.trim(); // Obtém o nome da cor
+        const selectedColorValue = this.querySelector('.color-sample').style.backgroundColor; // Obtém o valor da cor
+
+        // Atualiza o campo de entrada com o nome da cor
+        const inputField = this.closest('.dropdown').querySelector('input');
+        if (inputField) {
+            inputField.value = selectedColorName;
+        }
+
+        // Fecha o dropdown
+        const dropdownContent = this.closest('.dropdown-content');
+        if (dropdownContent) {
+            dropdownContent.classList.remove('active');
+        }
+
+        console.log('Cor selecionada:', selectedColorName, selectedColorValue);
     });
 });
 
